@@ -57,7 +57,7 @@ def post_detail(request, post_id):
     template = 'blog/detail.html'
 
     if posts_dict.get(post_id) is None:
-        raise Http404('Invalid post id')
+        raise Http404(f'Invalid post id: {post_id}')
     context = {'post': posts[post_id]}
     return render(request, template, context)
 
