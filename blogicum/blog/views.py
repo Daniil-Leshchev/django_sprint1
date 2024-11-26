@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 posts = [
     {
@@ -52,7 +53,15 @@ def index(request):
 
 def post_detail(request, id):
     template = 'blog/detail.html'
-    context = {'post': posts[id]}
+    post_id = None
+    for post in posts:
+        if post['id'] == id:
+            post_id = post['id']
+            break
+
+    if id < 0 or id >= len(posts) or post_id is None:
+        raise Http404('Invalid post id')
+    context = {'post': posts[post_id]}
     return render(request, template, context)
 
 
