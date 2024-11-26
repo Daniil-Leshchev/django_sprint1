@@ -44,6 +44,8 @@ posts = [
     },
 ]
 
+posts_dict = {post['id']: post for post in posts}
+
 
 def index(request):
     template = 'blog/index.html'
@@ -51,15 +53,10 @@ def index(request):
     return render(request, template, context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template = 'blog/detail.html'
-    post_id = None
-    for post in posts:
-        if post['id'] == id:
-            post_id = post['id']
-            break
 
-    if id < 0 or id >= len(posts) or post_id is None:
+    if posts_dict.get(post_id) is None:
         raise Http404('Invalid post id')
     context = {'post': posts[post_id]}
     return render(request, template, context)
